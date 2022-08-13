@@ -25,7 +25,6 @@
 - `check:spelling`: Check if project is spelled correctly
 - `fix:format`: Fix project format issues
 - `fix:lint`: Fix project lint issues
-- `fix:staged`: Check and fix staged files
 - `test`: Run all tests
 - `test:unit`: Run unit tests
 - `test:int`: Run integration tests
@@ -33,8 +32,3 @@
 - `test:watch`: Run tests in watch mode
 - `test:coverage`: Run tests with coverage
 - `coverage:view`: Show coverage information
-- `commit`: Help to commit changes using conventional commits
-- `version`: Generate new project version
-- `reset-hard`: Reset git repository to a clean state
-- `prepare-release`: Prepare the project for a release and generates a new release
-- `update-deps`: Update the project dependencies

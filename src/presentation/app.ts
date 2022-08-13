@@ -23,13 +23,9 @@ import { ErrorHandlerMiddleware, MorganMiddleware, NotFoundMiddleware } from './
 
 class App {
   public app: Application;
-
   public name: string;
-
   public port: number;
-
   public basePath: string;
-
   public env: string;
 
   constructor() {

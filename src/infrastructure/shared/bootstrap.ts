@@ -1,7 +1,5 @@
 import { performance } from 'perf_hooks';
-
 import { LOGGER } from '@domain/shared';
-
 import { DiContainer } from './di/di-container';
 
 interface BootstrapResult {
