@@ -1,6 +1,4 @@
-# express-mongoose-template
-
-![](https://github.com/RainEggplant/express-mongoose-template/workflows/CI/badge.svg)
+# Pricing Calculator API
 
 ## Quick Start
 
