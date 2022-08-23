@@ -4,7 +4,7 @@
   "description": "Price comparator",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node dist/index.js",
+    "start": "yarn dev",
     "compile": "ts-node build.ts && tsc",
     "dev": "cross-env NODE_ENV=development nodemon server/index.ts | pino-pretty",
     "dev:debug": "nodemon --exec \"node -r ts-node/register --inspect-brk\" server/index.ts | pino-pretty",
