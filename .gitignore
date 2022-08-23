@@ -4,7 +4,8 @@ node_modules
 .env.development
 .env.production
 .env.stage
-
+logs
+yarn.lock
 # VS Code
 .vscode/*
 !.vscode/settings.json
