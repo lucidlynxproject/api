@@ -17,11 +17,7 @@
     "typecheck": "tsc --noUnusedLocals"
   },
   "dependencies": {
-<<<<<<< HEAD
     "bcrypt": "^5.0.1",
-=======
-    "@faker-js/faker": "^7.4.0",
->>>>>>> b2a6d920f253d2f4a0358ed50487056578839eb8
     "bluebird": "3.7.2",
     "cookie-parser": "1.4.5",
     "cors": "^2.8.5",
