@@ -1,13 +1,18 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "target": "es6",
+    "target": "ES2019",
     "module": "commonjs",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "sourceMap": true,
-    "moduleResolution": "node",
+    "strict": true,
     "outDir": "dist",
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types"],
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["typings.d.ts", "server/**/*.ts"],
   "exclude": ["node_modules"]
