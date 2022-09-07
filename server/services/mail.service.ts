@@ -37,10 +37,10 @@ export class EmailService {
     this.transporter
       .verify()
       .then(() => {
-        console.log("Ready to send emails");
+        console.log("Nodemailer ready to go!");
       })
       .catch((e) => {
-        console.log("Error mailer: ", { e });
+        console.log("Nodemailer error: ", { e });
       });
   }
 
