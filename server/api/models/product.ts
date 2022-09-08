@@ -8,14 +8,31 @@ export interface IProductModel extends mongoose.Document {
   name: string;
   category:string;
   price:number;
+  barcode:string;
 }
 
 const schema = new mongoose.Schema(
   {
     id_product: { type: Number, unique: true },
     name: String,
-    category: String,
     price: String,
+    supermarket:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "supermarkets"
+    },
+    type:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "types"
+    },
+    category:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "categories"
+    },
+    product_changes:[{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "product_changes"
+    }],
+    barcode: String,
   },
   {
     collection: "products",

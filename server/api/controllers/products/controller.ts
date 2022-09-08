@@ -32,5 +32,17 @@ export class Controller {
       return next(err);
     }
   }
+  async delete(req: Request, res: Response, next: NextFunction) {
+    try {
+      const doc = await ProductsService.delete(parseInt(req.params.id));
+      if (doc) {
+        return res.status(200).json(doc);
+      }
+      const errors = [{ message: "Product not found" }];
+      return res.status(404).json({ errors });
+    } catch (err) {
+      return next(err);
+    }
+  }
 }
 export default new Controller();
