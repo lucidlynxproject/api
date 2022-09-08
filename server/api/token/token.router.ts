@@ -11,8 +11,4 @@ tokenRouter.post(
   (req, res) => tokenController.generateToken(req, res)
 );
 
-tokenRouter.get("/request_token", authMiddleware.isAuthenticated, (req, res) =>
-  tokenController.requestToken(req, res)
-);
-
 export default tokenRouter;

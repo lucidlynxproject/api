@@ -17,7 +17,7 @@ export class AuthManager {
       const filters = queryParser.getFilters({ email_in: email });
       const foundUser = await userModel.getAll(filters);
 
-      if (!foundUser.length) {
+      if (foundUser.length) {
         const user = foundUser[0];
         const passwordMatch = await AuthService.passwordMatch(
           user.password as string,
