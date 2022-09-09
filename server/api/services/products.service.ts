@@ -27,6 +27,14 @@ export class ProductsService {
     const doc = (await product.save()) as IProductModel;
     return doc;
   }
+  async delete(id: number): Promise<IProductModel> {
+    l.info(`delete product with id ${id}`);
+    const product = (await Product.findOneAndDelete(
+      { id: id }
+    ).lean()) as IProductModel;
+    return product;
+  }
+
 }
 
 export default new ProductsService();

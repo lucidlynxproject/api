@@ -1,5 +1,5 @@
 import { Product, IProductModel } from "../models/product";
-import { faker } from "@faker-js/faker";
+import { faker } from '@faker-js/faker';
 export class ProductSeeder {
     constructor() {
         this.seed();
