@@ -1,28 +1,36 @@
-import { Schema } from 'mongoose';
+import { Schema } from "mongoose";
 
-const UserSchema = new Schema({
+const UserSchema = new Schema(
+  {
     email: {
-        type: String,
-        required: true,
-        unique: true,
+      type: String,
+      required: true,
+      unique: true,
     },
     verify: {
-        type: Boolean,
+      type: Boolean,
     },
     password: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     authToken: {
-        type: String,
+      type: String,
     },
     refreshToken: {
-        type: String,
-        require: true,
+      type: String,
+      require: true,
     },
     recoveryToken: {
-        type: String,
+      type: String,
     },
-});
+    apiToken: {
+      type: String,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 export default UserSchema;

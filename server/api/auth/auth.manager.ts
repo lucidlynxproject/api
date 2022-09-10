@@ -17,7 +17,7 @@ export class AuthManager {
       const filters = queryParser.getFilters({ email_in: email });
       const foundUser = await userModel.getAll(filters);
 
-      if (foundUser.length !== 0) {
+      if (foundUser.length) {
         const user = foundUser[0];
         const passwordMatch = await AuthService.passwordMatch(
           user.password as string,
@@ -188,6 +188,7 @@ export class AuthManager {
         const refreshToken = AuthService.signToken(payload, "refresh_token");
         user.password = hashPassword;
         user.refreshToken = refreshToken;
+        console.log(user);
         const userDB = await userModel.create(user);
         const returningData = {
           token: AuthService.signToken(payload, "access_token"),
