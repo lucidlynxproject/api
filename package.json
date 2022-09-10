@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Price comparator",
   "main": "index.js",
+  "node": {
+    "version": ">= 16.0.0",
+    "npm": ">= 7.0.0"
+  },
   "scripts": {
     "compile": "ts-node build.ts && tsc",
 
