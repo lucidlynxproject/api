@@ -6,6 +6,5 @@ export interface User {
   authToken?: string;
   refreshToken?: string;
   recoveryToken?: string;
-  username?: string;
-  business?: string;
+  apiToken?: string | null;
 }
