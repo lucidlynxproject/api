@@ -7,17 +7,44 @@ import { Category } from "../../types/interfaces/category.interface";
 import { Section } from "../../types/interfaces/section.interface";
 import { Product } from "../../types/interfaces/product.interface";
 import { Product_Changes } from "../../types/interfaces/product_changes.interface";
+import section from "../models/section";
+let sectionsArray:Section[]=[];
 const sections = async () =>
   await SectionModel.getAllPopulated({}, "", {}, ["category"]).then(
     (sections) => {
-      return sections;
+        sectionsArray= sections;
     }
   );
- async function dailyScrapper():Promise<any> {
+const gen = function* dailyScrapperGenerator() {
+    for (let section of sectionsArray) {
+        yield section;
+    }
+}
+export default function startScrapper(){
+     SectionModel.getAllPopulated({}, "", {}, ["category"]).then(
+        (sections) => {
+            sectionsArray= sections;
+            setInterval(() => {
+                if(gen().next().done){
+                    console.log("load finished");
+
+                } else {
+                    dailyScrapper(gen().next().value).then((data)=>
+                    {
+                            ProductModel.createMany(data.products);
+                           ProductChanges.createMany(data.productsChanges);
+
+                        })
+                }
+            }, 5000)
+        }
+      );
+
+}
+ async function dailyScrapper(section:any):Promise<any> {
     let products: Product[] = [];
     let productsChanges: Product_Changes[] = [];
-  sections().then(async (sections: Section[]) => {
-    sections.forEach(async (section: Section) => {
+
       section.category!.forEach(async (category: Category) => {
 
         axios.get(category.link).then(async (response) => {
@@ -35,7 +62,6 @@ const sections = async () =>
             if(data.id){
              ProductModel.getOne({ barcode: data.id }).then(
               (product: any) => {
-                console.log(product)
 
                 if (!product) {
                   products.push({
@@ -62,20 +88,12 @@ const sections = async () =>
             );
             }
           });
-        });
-      });
     });
   });
-  return new Promise( (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
-        resolve({products,productsChanges})
-        }, 10000);
-    })
-}
-export default async function saveProducts() {
-    const products =  dailyScrapper().then( (products) => {
-     ProductModel.createMany(products.products);
-    ProductChanges.createMany(products.productsChanges);
+        resolve({products,productsChanges});
+    }, 5000);
     });
 
 }
