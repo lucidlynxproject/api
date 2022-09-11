@@ -7,7 +7,8 @@ import packageJSON from "../package.json";
 import apiRouter from "./api/routes";
 import authMiddleware from "./middlewares/auth.middleware";
 import mongooseConnector from "./repositories/mongoose/mongoose-connector.service";
-import BaseScrapper from "./api/scrapper/uploadBaseScrapper";
+import saveProducts from "./api/scrapper/dailyScrapper";
+import basescrapper from "./api/scrapper/uploadBaseScrapper";
 dotenv.config();
 const app = express();
 const http = require("http").Server(app);
@@ -41,5 +42,5 @@ app.set("view engine", "hbs");
 app.set("views", "./templates");
 
 http.listen(port, () => console.log(`Running at http://localhost:${port}`));
-const scrapper = new BaseScrapper();
-scrapper.uploadBaseScrapper();
+const base =new  basescrapper();
+saveProducts()

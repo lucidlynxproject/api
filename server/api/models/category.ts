@@ -1,19 +1,8 @@
-import mongoose from "mongoose";
-export interface ICategoryModel extends mongoose.Document {
-    id_category: number;
-    name: string;
-    section: string;
-    link: string;
-}
-const schema = new mongoose.Schema(
-    {
-        id_category: { type: Number, unique: true },
-        name: { type: String, unique: true },
-        section: { type: mongoose.Schema.Types.ObjectId, ref: "sections" },
-        link: String,
-    },
-    {
-        collection: "categories",
-    }
-);
-export const Category = mongoose.model<ICategoryModel>("Category", schema);
+import BaseModel from "../../base/base.model";
+import MongooseRepository from "../../repositories/mongoose/mongoose.repository";
+import CategorySchema from "../../repositories/mongoose/schemas/category.schema";
+import { Category } from "../../types/interfaces/category.interface";
+
+class CategoryModel extends BaseModel<Category, Category> {}
+
+export default new CategoryModel(new MongooseRepository("Category", CategorySchema));

@@ -1,20 +1,13 @@
 import cheerio from "cheerio";
-import mongoose from "mongoose";
-import { Product } from "../models/product";
-import { Supermarket } from "../models/supermarket";
-import { Section } from "../models/section";
-import { Category } from "../models/category";
+
+import SectionModel from "../models/section";
+import { Section } from "../../types/interfaces/section.interface";
+
+import CategoryModel from "../models/category";
+
 import axios from "axios";
-type section = 
-    {
-      name: string,
-      categories: [{
-        name:string,
-        link:string
-      }],
-    }
-  
-const supermarketUrl = process.env.supermarket || "https://www.carrefour.es";
+
+const supermarketUrl = process.env.supermarket || "https://www.hiperdino.es";
 export default class BaseScrapper {
   constructor() {
 
@@ -23,12 +16,12 @@ export default class BaseScrapper {
     await axios(supermarketUrl).then((response) => {
       const htmlData = response.data;
       const $ = cheerio.load(htmlData);
-      let section:section[];
+      let section=[] as any;
 
-      
+
       $(".category-group--container").each(function (i) {
 
-        let section1: {name:string, categories: { name: string; link: string; }[]; }= {
+        let section1: {name:string, categories: { name: string; link: string;section:string }[]; }= {
           name: "",
           categories: []
         };
@@ -46,11 +39,36 @@ export default class BaseScrapper {
                 section1.categories[j] = {
                     name: $(e).text().trim(),
                     link: $(e).attr("href")!.trim(),
+                    section:section1.name
                 }
-                console.log(section1)
                 })
-                
+            section.push(section1);
       });
+      this.uploadSectionAndCategories(section)
+
     });
+  }
+  private async uploadSectionAndCategories(sections:any) {
+    sections.forEach(async (item:any) => {
+
+    await   SectionModel.create({
+        name: item.name,
+      }).then(async (section:Section) => {
+        item.categories.forEach(async (category:any) => {
+
+        await CategoryModel.create({
+            name: category.name,
+            link: category.link,
+            section: section._id,
+          }).then(async (c)=>{
+         await   SectionModel.update(section._id||"", { $push: { category: c._id } });
+          });
+        });
+      })
+
+
+
+
+    })
   }
 }
