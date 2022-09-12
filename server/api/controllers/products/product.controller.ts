@@ -7,4 +7,5 @@ export default class ProductController extends BaseController {
   constructor() {
     super(productManager);
   }
+  
 }

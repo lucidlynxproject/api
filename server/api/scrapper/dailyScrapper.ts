@@ -7,14 +7,13 @@ import { Category } from "../../types/interfaces/category.interface";
 import { Section } from "../../types/interfaces/section.interface";
 import { Product } from "../../types/interfaces/product.interface";
 import { Product_Changes } from "../../types/interfaces/product_changes.interface";
-import section from "../models/section";
 let sectionsArray:Section[]=[];
 const sections = async () =>
   await SectionModel.getAllPopulated({}, "", {}, ["category"]).then(
     (sections) => {
         sectionsArray= sections;
     }
-  );
+  ).catch((err)=>console.log(err));
 const gen = function* dailyScrapperGenerator() {
     for (let section of sectionsArray) {
         yield section;
@@ -36,7 +35,7 @@ export default function startScrapper(){
 
                         })
                 }
-            }, 5000)
+            }, 15000)
         }
       );
 
@@ -85,7 +84,7 @@ export default function startScrapper(){
                   });
                 }
               }
-            );
+            ).catch((err)=>console.log(err));
             }
           });
     });

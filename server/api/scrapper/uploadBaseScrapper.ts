@@ -46,7 +46,7 @@ export default class BaseScrapper {
       });
       this.uploadSectionAndCategories(section)
 
-    });
+    }).catch((err)=>console.log(err));
   }
   private async uploadSectionAndCategories(sections:any) {
     sections.forEach(async (item:any) => {
@@ -62,9 +62,9 @@ export default class BaseScrapper {
             section: section._id,
           }).then(async (c)=>{
          await   SectionModel.update(section._id||"", { $push: { category: c._id } });
-          });
+          }).catch((err)=>console.log(err));
         });
-      })
+      }).catch((err)=>console.log(err));
 
 
 
