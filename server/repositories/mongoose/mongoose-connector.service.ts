@@ -1,6 +1,10 @@
 import dotenv from "dotenv";
 import mongoose, { Connection } from "mongoose";
 import UserSchema from "./schemas/user.schema";
+import SectionSchema from "./schemas/section.schema";
+import ProductSchema from "./schemas/product.schema";
+import Product_ChangesSchema from "./schemas/product_changes.schema";
+import CategorySchema from "./schemas/category.schema";
 
 dotenv.config();
 
@@ -13,7 +17,7 @@ const {
 } = process.env;
 
 const POOL_SIZE = 20;
-export const MONGOOSE_MODELS = [{ name: "users", schema: UserSchema }];
+  export const MONGOOSE_MODELS = [{ name: "users", schema: UserSchema },{ name: "products", schema: ProductSchema },{ name: "product_changes", schema: Product_ChangesSchema },{ name: "sections", schema: SectionSchema },{ name: "categories", schema: CategorySchema }];
 
 class MongooseConnector {
   connectionPool: { db: string; connection: Connection }[];

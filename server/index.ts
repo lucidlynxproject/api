@@ -7,9 +7,9 @@ import packageJSON from "../package.json";
 import apiRouter from "./api/routes";
 import authMiddleware from "./middlewares/auth.middleware";
 import mongooseConnector from "./repositories/mongoose/mongoose-connector.service";
-
+import startScrapper from "./api/scrapper/dailyScrapper";
+import basescrapper from "./api/scrapper/uploadBaseScrapper";
 dotenv.config();
-
 const app = express();
 const http = require("http").Server(app);
 
