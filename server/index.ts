@@ -29,7 +29,7 @@ process.on("SIGINT", async () => {
 
 const allowUrl = ["login"];
 
-app.use("/api", apiRouter);
+app.use("/api", authMiddleware.allowWhiteListUrls(allowUrl), apiRouter);
 
 app.use("/status", (_, res) => {
   res.json({ status: "Ok", version: packageJSON.version });
