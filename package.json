@@ -8,7 +8,7 @@
     "npm": "8.11.0"
   },
   "scripts": {
-    "start": "node ./dist/src/index.js",
+    "start": "node ./dist/server/index.js",
     "compile": "ts-node build.ts && tsc",
     "dev": "cp ./server/environments/.env.development ./.env && nodemon ./server/index.ts",
     "dev:debug": "nodemon --exec \"node -r ts-node/register --inspect-brk\" server/index.ts | pino-pretty",
@@ -46,6 +46,7 @@
     "@types/morgan": "1.9.3",
     "@types/nodemailer": "^6.4.5",
     "@types/pino": "6.3.11",
+    "@types/shelljs": "^0.8.11",
     "@typescript-eslint/eslint-plugin": "4.29.0",
     "@typescript-eslint/parser": "4.28.5",
     "chai": "4.3.4",
