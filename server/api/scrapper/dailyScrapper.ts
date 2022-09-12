@@ -20,24 +20,26 @@ const gen = function* dailyScrapperGenerator() {
     }
 }
 export default function startScrapper(){
-     SectionModel.getAllPopulated({}, "", {}, ["category"]).then(
-        (sections) => {
-            sectionsArray= sections;
-            setInterval(() => {
+
+           let interval= setInterval(() => {
                 if(gen().next().done){
-                    console.log("load finished");
+                  clearInterval(interval)
 
                 } else {
-                    dailyScrapper(gen().next().value).then((data)=>
+                  let data = gen().next().value
+                    dailyScrapper(data).then((data)=>
                     {
                             ProductModel.createMany(data.products);
-                           ProductChanges.createMany(data.productsChanges);
+                           ProductChanges.createMany(data.productsChanges).then((product_changes:any)=>{
+                            product_changes.forEach((item:Product_Changes)=>{
+                                ProductModel.update(item.product,{$push: {product_changes:item._id}});
+                            })
+                           });
 
                         })
                 }
             }, 15000)
-        }
-      );
+
 
 }
  async function dailyScrapper(section:any):Promise<any> {
