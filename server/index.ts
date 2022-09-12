@@ -29,7 +29,7 @@ process.on("SIGINT", async () => {
 
 const allowUrl = ["login"];
 
-app.use("/api", authMiddleware.allowWhiteListUrls(allowUrl), apiRouter);
+app.use("/api", apiRouter);
 
 app.use("/status", (_, res) => {
   res.json({ status: "Ok", version: packageJSON.version });
@@ -42,4 +42,3 @@ app.set("view engine", "hbs");
 app.set("views", "./templates");
 
 http.listen(port, () => console.log(`Running at http://localhost:${port}`));
-startScrapper();
