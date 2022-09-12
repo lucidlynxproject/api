@@ -6,7 +6,9 @@ export default class BaseModel<S, T> {
     constructor(repo: BaseRepository) {
         this.repo = repo;
     }
-
+    getOne(filters: Record<string, unknown>,options?:Record<string,unknown>): Promise<T[]> {
+        return this.repo.getOne(filters,options);
+    }
     count(filters: Record<string, unknown>): Promise<number> {
         return this.repo.count(filters);
     }

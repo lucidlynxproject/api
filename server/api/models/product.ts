@@ -1,27 +1,8 @@
-import mongoose from "mongoose";
-import sequence from "mongoose-sequence";
+import BaseModel from "../../base/base.model";
+import MongooseRepository from "../../repositories/mongoose/mongoose.repository";
+import ProductSchema from "../../repositories/mongoose/schemas/product.schema";
+import { Product } from "../../types/interfaces/product.interface";
 
-const AutoIncrement = sequence(mongoose);
+class ProductModel extends BaseModel<Product, Product> {}
 
-export interface IProductModel extends mongoose.Document {
-  id_product: number;
-  name: string;
-  category:string;
-  price:number;
-}
-
-const schema = new mongoose.Schema(
-  {
-    id_product: { type: Number, unique: true },
-    name: String,
-    category: String,
-    price: String,
-  },
-  {
-    collection: "products",
-  }
-);
-
-schema.plugin(AutoIncrement, { inc_field: "id_product", });
-
-export const Product = mongoose.model<IProductModel>("Product", schema);
+export default new ProductModel(new MongooseRepository("Product", ProductSchema));
