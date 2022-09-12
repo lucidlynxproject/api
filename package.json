@@ -8,7 +8,7 @@
     "npm": "8.11.0"
   },
   "scripts": {
-    "start": "node ./dist/server/index.js",
+    "start": "npm run compile && node ./dist/server/index.js",
     "compile": "ts-node build.ts && tsc",
     "dev": "cp ./server/environments/.env.development ./.env && nodemon ./server/index.ts",
     "dev:debug": "nodemon --exec \"node -r ts-node/register --inspect-brk\" server/index.ts | pino-pretty",
@@ -20,6 +20,7 @@
     "typecheck": "tsc --noUnusedLocals"
   },
   "dependencies": {
+    "@types/node": "^18.7.16",
     "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "bluebird": "3.7.2",
@@ -29,7 +30,7 @@
     "dotenv": "10.0.0",
     "express": "4.17.1",
     "express-openapi-validator": "^4.13.8",
-    "faker": "^6.6.6",
+    "faker": "^5.5.3",
     "hbs": "^4.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.5.2",
@@ -65,8 +66,8 @@
     "prettier": "2.3.2",
     "shelljs": "^0.8.5",
     "supertest": "6.1.4",
-    "ts-node": "9.1.1",
-    "typescript": "4.3.5"
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.3"
   },
   "lint-staged": {
     "{{server/**/*,test/**/*}.{js,jsx,ts,tsx,json,css,scss,yml,yaml}}": [
