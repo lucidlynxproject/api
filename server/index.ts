@@ -7,8 +7,7 @@ import packageJSON from "../package.json";
 import apiRouter from "./api/routes";
 import authMiddleware from "./middlewares/auth.middleware";
 import mongooseConnector from "./repositories/mongoose/mongoose-connector.service";
-import startScrapper from "./api/scrapper/dailyScrapper";
-import { BaseScrapper } from "./api/scrapper/uploadBaseScrapper";
+import scrapperJob from "./api/scrapper/scrapperRoutine";
 
 dotenv.config();
 const app = express();
@@ -44,3 +43,5 @@ app.set("view engine", "hbs");
 app.set("views", "./templates");
 
 http.listen(port, () => console.log(`Running at http://localhost:${port}`));
+
+scrapperJob;
