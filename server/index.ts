@@ -8,7 +8,8 @@ import apiRouter from "./api/routes";
 import authMiddleware from "./middlewares/auth.middleware";
 import mongooseConnector from "./repositories/mongoose/mongoose-connector.service";
 import startScrapper from "./api/scrapper/dailyScrapper";
-import basescrapper from "./api/scrapper/uploadBaseScrapper";
+import { BaseScrapper } from "./api/scrapper/uploadBaseScrapper";
+
 dotenv.config();
 const app = express();
 const http = require("http").Server(app);
@@ -17,6 +18,7 @@ app.use(cors());
 app.use(express.json());
 morgan("tiny");
 mongooseConnector.connect();
+
 process.on("SIGINT", async () => {
   try {
     await mongooseConnector.disconnectAllDBs();
@@ -34,6 +36,8 @@ app.use("/api", authMiddleware.allowWhiteListUrls(allowUrl), apiRouter);
 app.use("/status", (_, res) => {
   res.json({ status: "Ok", version: packageJSON.version });
 });
+
+startScrapper();
 
 const port = process.env.PORT || 3000;
 const hbs = require("hbs");
