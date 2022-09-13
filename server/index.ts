@@ -37,8 +37,6 @@ app.use("/status", (_, res) => {
   res.json({ status: "Ok", version: packageJSON.version });
 });
 
-startScrapper();
-
 const port = process.env.PORT || 3000;
 const hbs = require("hbs");
 
