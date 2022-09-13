@@ -24,6 +24,7 @@ const gen = function* dailyScrapperGenerator() {
 };
 
 export default function startScrapper() {
+  console.log("Running scrapper");
   SectionModel.getAllPopulated({}, "", {}, ["category"]).then((sections) => {
     sectionsArray = sections;
     setInterval(() => {
