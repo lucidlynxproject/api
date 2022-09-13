@@ -7,8 +7,8 @@ import packageJSON from "../package.json";
 import apiRouter from "./api/routes";
 import authMiddleware from "./middlewares/auth.middleware";
 import mongooseConnector from "./repositories/mongoose/mongoose-connector.service";
-import startScrapper from "./api/scrapper/dailyScrapper";
-import basescrapper from "./api/scrapper/uploadBaseScrapper";
+import scrapperJob from "./api/scrapper/scrapperRoutine";
+
 dotenv.config();
 const app = express();
 const http = require("http").Server(app);
@@ -17,6 +17,7 @@ app.use(cors());
 app.use(express.json());
 morgan("tiny");
 mongooseConnector.connect();
+
 process.on("SIGINT", async () => {
   try {
     await mongooseConnector.disconnectAllDBs();
@@ -42,4 +43,5 @@ app.set("view engine", "hbs");
 app.set("views", "./templates");
 
 http.listen(port, () => console.log(`Running at http://localhost:${port}`));
-startScrapper();
+
+scrapperJob;
