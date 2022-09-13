@@ -3,5 +3,5 @@ export interface Product_Changes {
     name: string;
     price: number;
     date: Date;
-    product: number;
+    product: string;
 }
