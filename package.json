@@ -8,7 +8,7 @@
     "npm": "8.11.0"
   },
   "scripts": {
-    "start": "node ./dist/src/index.js",
+    "start": "npm run compile && node ./dist/server/index.js",
     "compile": "ts-node build.ts && tsc",
     "dev": "nodemon ./server/index.ts",
     "dev:debug": "nodemon --exec \"node -r ts-node/register --inspect-brk\" server/index.ts | pino-pretty",

@@ -4,97 +4,70 @@ import ProductChanges from "../models/product_changes";
 import axios from "axios";
 import cheerio from "cheerio";
 import { Category } from "../../types/interfaces/category.interface";
-import { Section } from "../../types/interfaces/section.interface";
-import { Product } from "../../types/interfaces/product.interface";
-import { Product_Changes } from "../../types/interfaces/product_changes.interface";
-let sectionsArray:Section[]=[];
-const sections = async () =>
-  await SectionModel.getAllPopulated({}, "", {}, ["category"]).then(
-    (sections) => {
-        sectionsArray= sections;
-    }
-  ).catch((err)=>console.log(err));
-const gen = function* dailyScrapperGenerator() {
-    for (let section of sectionsArray) {
-        yield section;
-    }
+
+export default function startScrapper() {
+  SectionModel.getAllPopulated({}, "", {}, ["category"])
+    .then((sections) => {
+      let c = 0;
+      sections.forEach(async (section, i) => {
+        let set = setTimeout(() => {
+
+          console.log(section.name);
+          if(section.name!=="Alimentación"){
+          dailyScrapper(section);
+          }
+          console.log("Scrapper finished" );
+
+          c++;
+          if (c ==sections.length-1) {
+            clearInterval(set);
+          }
+        }, i*5000);
+      });
+    })
+    .catch((err) => console.log(err));
 }
-export default function startScrapper(){
-
-           let interval= setInterval(() => {
-                if(gen().next().done){
-                  clearInterval(interval)
-
-                } else {
-                  let data = gen().next().value
-                    dailyScrapper(data).then((data)=>
-                    {
-                            ProductModel.createMany(data.products);
-                           ProductChanges.createMany(data.productsChanges).then((product_changes:any)=>{
-                            product_changes.forEach((item:Product_Changes)=>{
-                                ProductModel.update(item.product,{$push: {product_changes:item._id}});
-                            })
-                           });
-
-                        })
+async function dailyScrapper(section: any) {
+  section.category!.forEach(async (category: Category) => {
+  await  axios.get(category.link).then((response) => {
+      const htmlData = response.data;
+      const $ = cheerio.load(htmlData);
+      $(".action-container").map(async function () {
+        let data = $(this).attr("data-all");
+        data!.concat(",");
+        data!.substring(0, data!.length - 1);
+        let dataJson = JSON.parse(data!);
+        if (dataJson.id) {
+          await ProductModel.getOne({ barcode: dataJson.id })
+            .then(async (product: any) => {
+              if (!product) {
+                await ProductModel.create({
+                  name: dataJson.name,
+                  section: section._id || "",
+                  category: category._id || "",
+                  product_changes: [],
+                  barcode: dataJson.id,
+                });
+              } else {
+                
+                let price = dataJson.final_price;
+                if (price.includes("/kg")) {
+                  price = price.replace("/kg", "");
                 }
-            }, 15000)
-
-
-}
- async function dailyScrapper(section:any):Promise<any> {
-    let products: Product[] = [];
-    let productsChanges: Product_Changes[] = [];
-
-      section.category!.forEach(async (category: Category) => {
-
-        axios.get(category.link).then(async (response) => {
-          const htmlData = response.data;
-          const $ = cheerio.load(htmlData);
-
-          let dataJson: any = [];
-          await $(".action-container").map(function () {
-            let data = $(this).attr("data-all");
-            data!.concat(",");
-            data!.substring(0, data!.length - 1);
-            dataJson.push(JSON.parse(data!));
-          });
-          dataJson.forEach(async (data: any) => {
-            if(data.id){
-             ProductModel.getOne({ barcode: data.id }).then(
-              (product: any) => {
-
-                if (!product) {
-                  products.push({
-                    name: data.name,
-                    section: section._id || "",
-                    category: category._id || "",
-                    product_changes: [],
-                    barcode: data.id,
-                  });
-                } else {
-                    let price = data.final_price
-                    if(price.includes("/kg")){
-                        price = price.replace("/kg", "")
-                    }
-
-                  productsChanges.push({
-                    name: data.name,
-                    price: price.replace("€", "").replace(",", "."),
-                    date: new Date(),
-                    product: product._id,
-                  });
-                }
+                await ProductChanges.create({
+                  name: dataJson.name,
+                  price: price.replace("€", "").replace(",", "."),
+                  date: new Date(),
+                  product: product._id,
+                }).then(async (productChanges) => {
+                  product.product_changes.push(productChanges._id);
+                  await product.save();
+                });
               }
-            ).catch((err)=>console.log(err));
-            }
-          });
+            })
+            .catch((err) => console.log(err));
+        }
+      });
     });
   });
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-        resolve({products,productsChanges});
-    }, 5000);
-    });
-
 }
