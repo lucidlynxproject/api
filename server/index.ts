@@ -8,6 +8,7 @@ import apiRouter from "./api/routes";
 import authMiddleware from "./middlewares/auth.middleware";
 import mongooseConnector from "./repositories/mongoose/mongoose-connector.service";
 import scrapperJob from "./api/scrapper/scrapperRoutine";
+import { BaseScrapper } from "./api/scrapper/uploadBaseScrapper";
 
 dotenv.config();
 const app = express();
