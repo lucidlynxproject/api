@@ -1,0 +1,136 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Price Analytics API",
+    "description": "\nPrice Analytics es una API que proporciona acceso a datos de supermercados en España.\n\nPara usar esa API, visita [Price Analytics](https://price-comparator-web-stage.web.app/home) y regístrate para obtener una key.",
+    "contact": {
+      "email": "lucidlynxago2022@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://price-comparator-api-prod.herokuapp.com/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "products",
+      "description": "Everything about products"
+    }
+  ],
+  "paths": {
+    "/products": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Get all products",
+        "description": "Get all products at once",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": [
+              "read:product"
+            ]
+          }
+        ]
+      }
+    },
+    "/products/history/{id}": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Get history of product by product ID",
+        "description": "Multiple status values can be provided with comma separated strings",
+        "operationId": "findPetsByStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the wanted product history",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": [
+              "read:products"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "44"
+          },
+          "name": {
+            "type": "string",
+            "example": "apple"
+          },
+          "section": {
+            "type": "string",
+            "example": "fruits"
+          },
+          "category": {
+            "type": "string",
+            "example": "alimentos"
+          },
+          "barcode": {
+            "type": "string",
+            "example": "555334"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

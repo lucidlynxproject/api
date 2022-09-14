@@ -1,7 +1,7 @@
 import cheerio from "cheerio";
-import SectionModel from "../models/section";
-import { Section } from "../../types/interfaces/section.interface";
-import CategoryModel from "../models/category";
+import SectionModel from "../api/models/section";
+import { Section } from "../types/interfaces/section.interface";
+import CategoryModel from "../api/models/category";
 import axios from "axios";
 
 const SUPERMARKET_URL = process.env.supermarket || "https://www.hiperdino.es";

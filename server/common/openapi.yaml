@@ -1,0 +1,108 @@
+openapi: 3.0.3
+info:
+  title: Price Analytics API
+  description: |2-
+
+    Price Analytics es una API que proporciona acceso a datos de supermercados en España.
+
+    Para usar esa API, visita [Price Analytics](https://price-comparator-web-stage.web.app/home) y regístrate para obtener una key.
+  contact:
+    email: lucidlynxago2022@gmail.com
+  version: 1.0.0
+servers:
+  - url: https://price-comparator-api-prod.herokuapp.com/
+tags:
+  - name: products
+    description: Everything about products
+paths:
+  /products:
+    get:
+      tags:
+        - products
+      summary: Get all products
+      description: Get all products at once
+      operationId: productsGET
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+                x-content-type: application/json
+      security:
+        - pricesanalytics_auth:
+            - read:product
+      x-swagger-router-controller: Products
+  /products/history/{id}:
+    get:
+      tags:
+        - products
+      summary: Get history of product by product ID
+      description: Multiple status values can be provided with comma separated strings
+      operationId: findPetsByStatus
+      parameters:
+        - name: id
+          in: path
+          description: ID of the wanted product history
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+                x-content-type: application/json
+        "400":
+          description: Invalid status value
+      security:
+        - petstore_auth:
+            - read:products
+      x-swagger-router-controller: Products
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "44"
+        name:
+          type: string
+          example: apple
+        section:
+          type: string
+          example: fruits
+        category:
+          type: string
+          example: alimentos
+        barcode:
+          type: string
+          example: "555334"
+      example:
+        name: apple
+        section: fruits
+        id: "44"
+        category: alimentos
+        barcode: "555334"
+  securitySchemes:
+    pricesanalytics_auth:
+      type: http
+      flows:
+        implicit:
+          authorizationUrl: https://price-comparator-web-stage.web.app/token
+          scopes:
+            read:products: read products
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

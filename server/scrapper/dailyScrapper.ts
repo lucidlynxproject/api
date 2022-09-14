@@ -1,9 +1,9 @@
-import SectionModel from "../models/section";
-import ProductModel from "../models/product";
-import ProductChanges from "../models/product_changes";
+import SectionModel from "../api/models/section";
+import ProductModel from "../api/models/product";
+import ProductChanges from "../api/models/product_changes";
 import axios from "axios";
 import cheerio from "cheerio";
-import { Category } from "../../types/interfaces/category.interface";
+import { Category } from "../types/interfaces/category.interface";
 
 export default function startScrapper() {
   SectionModel.getAllPopulated({}, "", {}, ["category"])
@@ -11,25 +11,24 @@ export default function startScrapper() {
       let c = 0;
       sections.forEach(async (section, i) => {
         let set = setTimeout(() => {
-
           console.log(section.name);
-          if(section.name!=="Alimentación"){
-          dailyScrapper(section);
+          if (section.name !== "Alimentación") {
+            dailyScrapper(section);
           }
-          console.log("Scrapper finished" );
+          console.log("Scrapper finished");
 
           c++;
-          if (c ==sections.length-1) {
+          if (c == sections.length - 1) {
             clearInterval(set);
           }
-        }, i*5000);
+        }, i * 5000);
       });
     })
     .catch((err) => console.log(err));
 }
 async function dailyScrapper(section: any) {
   section.category!.forEach(async (category: Category) => {
-  await  axios.get(category.link).then((response) => {
+    await axios.get(category.link).then((response) => {
       const htmlData = response.data;
       const $ = cheerio.load(htmlData);
       $(".action-container").map(async function () {
@@ -49,7 +48,6 @@ async function dailyScrapper(section: any) {
                   barcode: dataJson.id,
                 });
               } else {
-                
                 let price = dataJson.final_price;
                 if (price.includes("/kg")) {
                   price = price.replace("/kg", "");
