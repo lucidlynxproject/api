@@ -13,8 +13,9 @@ export default class ProductController extends BaseController {
     res: Response
   ): Promise<Response<any, Record<string, any>>> {
     try {
-      const { id, filters } = req.params;
-      const result = await productManager.getDailyPriceById(id, filters);
+      const { id } = req.body;
+      console.log(req.body);
+      const result = await productManager.getDailyPriceById(id);
 
       return responseService.success(
         res,
@@ -30,7 +31,7 @@ export default class ProductController extends BaseController {
     res: Response
   ): Promise<Response<any, Record<string, any>>> {
     try {
-      const {section, filters } = req.params;
+      const {section} = req.params;
       const result = await productManager.getDailyPriceBySection(
         section
       );
@@ -49,7 +50,7 @@ export default class ProductController extends BaseController {
     res: Response
   ): Promise<Response<any, Record<string, any>>> {
     try {
-      const { id, category, filters } = req.params;
+      const {category } = req.params;
       const result = await productManager.getDailyPriceByCategory(
         category
       );
@@ -68,13 +69,11 @@ export default class ProductController extends BaseController {
     res: Response
   ): Promise<Response<any, Record<string, any>>> {
     try {
-      const { filters } = req.params;
-      const options: any[] = [];
+      const { category } = req.params;
 
-      options.push(req.params.section);
       const result = await productManager.getPriceHistoryByCategory(
-        options,
-        filters
+        category,
+        
       );
 
       return responseService.success(
@@ -92,11 +91,10 @@ export default class ProductController extends BaseController {
     res: Response
   ): Promise<Response<any, Record<string, any>>> {
     try {
-      const { filters } = req.params;
-      const options: any[] = [];
-      options.push(req.params.id);
+      const { id } = req.params;
 
-      const result = await productManager.getProductPriceHistoryById(options, filters);
+
+      const result = await productManager.getProductPriceHistoryById(id);
 
       return responseService.success(
         res,
@@ -112,13 +110,12 @@ export default class ProductController extends BaseController {
     res: Response
   ): Promise<Response<any, Record<string, any>>> {
     try {
-      const { id,filters } = req.params;
+      const { section } = req.params;
 
 
 
       const result = await productManager.getProductPriceGHistoryBySection(
-        id,
-        filters
+        section
       );
 
       return responseService.success(

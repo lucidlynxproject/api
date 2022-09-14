@@ -4,12 +4,14 @@ import { Product } from "../../types/interfaces/product.interface";
 import productModel from "../models/product";
 import product_changes from "../models/product_changes";
 export class ProductManager extends BaseManager<Product> {
-  getDailyPriceById(id: string, filters: string) {
+  getDailyPriceById(id: string) {
     return productModel
-    .getAllPopulated({ _id:id }, "", { 'product_changes.date':{
-      $gte: new Date().setHours(0,0,0,0),
-      $lte: new Date().setHours(23,59,59,999)
-    } }, ["product_changes"])
+    .getAllPopulated({$and:[
+     { _id: id,},
+      {'product_changes.date':{
+        $eq: new Date().toLocaleDateString('pt-Pt')
+      }}
+    ]}, "",{}, ["product_changes"])
     .catch((err) => {
       throw err;
     });
@@ -18,8 +20,7 @@ export class ProductManager extends BaseManager<Product> {
   getDailyPriceBySection( section: any) {
     return productModel
     .getAllPopulated({ }, "", {  'product_changes.date':{
-      $gte: new Date().setHours(0,0,0,0),
-      $lte: new Date().setHours(23,59,59,999)
+      $eq: new Date().toLocaleDateString('pt-Pt')
     },'section.name':{
       $eq: section
     } }, ["product_changes"])
@@ -30,42 +31,35 @@ export class ProductManager extends BaseManager<Product> {
   getDailyPriceByCategory( category: any) {
     return productModel
     .getAllPopulated({}, "", {  'product_changes.date':{
-      $gte: new Date().setHours(0,0,0,0),
-      $lte: new Date().setHours(23,59,59,999)
+      $eq: new Date().toLocaleDateString('pt-Pt')
     },'category.name':{
       $eq: category
-    } }, ["product_changes"]).then((data:any)=>{
-      let result = data;
-       result.product_changes = result.product_changes.filter((item:any)=>{
-        let start= new Date();
-        start.setHours(0,0,0,0);
-        let end= new Date();
-        end.setHours(23,59,59,999);
-        return item.date  >=start  && end <=item.date;
-      })
-      return result;
-    })
+    } }, ["product_changes"])
     .catch((err) => {
       throw err;
     });
   }
-/*YASSS*/  getPriceHistoryByCategory(id: any, filters: any) {
+/*YASSS*/  getPriceHistoryByCategory(category: any) {
     return productModel
-      .getAllPopulated({ category:id }, "", { filters }, ["product_changes"])
+      .getAllPopulated({}, "", {'category.name':{
+        $eq: category
+      }}, ["product_changes"])
       .catch((err) => {
         throw err;
       });
   }
-/*YASSS*/  getProductPriceGHistoryBySection(id: any, filters: any): any {
+/*YASSS*/  getProductPriceGHistoryBySection(filters: any): any {
     return productModel
-      .getAllPopulated({ _id: id }, "", filters, ["product_changes"])
+      .getAllPopulated({'section.name':{
+        $eq: filters
+      }}, "", {}, ["product_changes"])
       .catch((err) => {
         throw err;
       });
   }
-/*YASSS*/  getProductPriceHistoryById(id: any, filters: any): any {
+/*YASSS*/  getProductPriceHistoryById(id: any): any {
     return productModel
-      .getAllPopulated({ _id: id }, "", filters, ["product_changes"])
+      .getAllPopulated({ _id: id }, "", {}, ["product_changes"])
       .catch((err) => {
         throw err;
       });
