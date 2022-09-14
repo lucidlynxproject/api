@@ -8,23 +8,23 @@ productRouter.get("/",  (req, res) =>
 productController.getAll(req, res)
 );
 
-productRouter.get("/dailyPriceByProduct/:id",  (req, res) =>
-productController.getProductPriceHistory(req, res)
+productRouter.get("/dailyprice/",  (req, res) =>
+productController.getDailyPriceById(req, res)
 );
 
-productRouter.get("/dailyPriceBySection/:id",  (req, res) =>
+productRouter.get("/dailypricebySection/",  (req, res) =>
 productController.getDailyPriceBySection(req, res)
 );
-productRouter.get("/dailyPriceByCategory/:id",  (req, res) =>
+productRouter.get("/dailypricebyCategory/",  (req, res) =>
 productController.getDailyPriceByCategory(req, res)
 );
-productRouter.get("/priceHistoryById/:id",  (req, res) =>
-productController.getPriceHistoryById(req, res)
+productRouter.get("/pricehistory/",  (req, res) =>
+productController.getProductPriceHistoryById(req, res)
 );
-productRouter.get("/priceHistoryBySection/:id",  (req, res) =>
+productRouter.get("/pricehistorybysection/",  (req, res) =>
 productController.getPriceHistoryBySection(req, res)
 );
-productRouter.get("/priceHistoryByCategory/:id",  (req, res) =>
+productRouter.get("/pricehistorybycategory/",  (req, res) =>
 productController.getPriceHistoryByCategory(req, res)
 );
 export default productRouter;

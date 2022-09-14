@@ -81,7 +81,7 @@ export default function startScrapper(){
                   productsChanges.push({
                     name: data.name,
                     price: price.replace("€", "").replace(",", "."),
-                    date: new Date(),
+                    date: new Date().toLocaleDateString('pt-PT'),
                     product: product._id,
                   });
                 }
