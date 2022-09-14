@@ -18,7 +18,7 @@
     "lint": "eslint -c .eslintrc.js \"{server, test}/**/*.{js,ts,tsx}\" --quiet",
     "lint:fix": "eslint -c .eslintrc.js \"{server, test}/**/*.{js,ts,tsx}\" --quiet --fix",
     "typecheck": "tsc --noUnusedLocals",
-    "swagger-autogen": "node ./server/util/swagger.js"
+    "swagger-autogen": "node ./server/scripts/swagger.js"
   },
   "dependencies": {
     "@types/node": "^18.7.16",

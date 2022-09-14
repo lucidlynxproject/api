@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://price-comparator-api-prod.herokuapp.com/"
+      "url": "https://price-comparator-api-prod.herokuapp.com/api"
     }
   ],
   "tags": [

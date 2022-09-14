@@ -10,7 +10,7 @@ info:
     email: lucidlynxago2022@gmail.com
   version: 1.0.0
 servers:
-  - url: https://price-comparator-api-prod.herokuapp.com/
+  - url: https://price-comparator-api-prod.herokuapp.com/api
 tags:
   - name: products
     description: Everything about products

@@ -43,6 +43,8 @@ app.use(
   swaggerUi.serve,
   swaggerUi.setup(openapi, {
     customCss: ".swagger-ui .topbar { display: none }",
+    customSiteTitle: "Documentation",
+    customfavIcon: "./assets/favicon.ico",
   })
 );
 
