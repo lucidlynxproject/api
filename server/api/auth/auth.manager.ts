@@ -64,9 +64,9 @@ export class AuthManager {
   public async sendWelcomeEmail(email: string): Promise<void> {
     const token = AuthService.getVerifyEmailToken(email);
     const mailOptions: EmailMessage = {
-      from: `"Price Comparator API" ${process.env.MAIL}`,
+      from: `"Price Analytics API" ${process.env.MAIL}`,
       to: email,
-      subject: "!Bienvenido a Price Comparator!",
+      subject: "!Bienvenido a Price Analytics!",
       template: "welcome",
       context: {
         email,
@@ -74,8 +74,8 @@ export class AuthManager {
       },
       attachments: [
         {
-          filename: "price_comparator.png",
-          path: "./templates/images/price_comparator.png",
+          filename: "price_analytics.png",
+          path: "./templates/images/price_analytics.png",
           cid: "logo",
         },
       ],
@@ -161,7 +161,7 @@ export class AuthManager {
       attachments: [
         {
           filename: "logo-color.png",
-          path: "./templates/images/price_comparator.png",
+          path: "./templates/images/price_analytics.png",
           cid: "logo",
         },
       ],
