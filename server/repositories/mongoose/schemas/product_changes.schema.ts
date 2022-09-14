@@ -5,7 +5,7 @@ const Product_ChangesSchema = new Schema(
     product: { type: Schema.Types.ObjectId, ref: "types" },
     name: { type: String },
     price: { type: Number },
-    date: { type: Date },
+    date: { type: String },
   },
   {
     collection: "product_changes",

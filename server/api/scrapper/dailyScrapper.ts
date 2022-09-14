@@ -57,7 +57,7 @@ async function dailyScrapper(section: any) {
                 await ProductChanges.create({
                   name: dataJson.name,
                   price: price.replace("€", "").replace(",", "."),
-                  date: new Date(),
+                  date: new Date().toLocaleDateString('pt-PT'),
                   product: product._id,
                 }).then(async (productChanges) => {
                   product.product_changes.push(productChanges._id);

@@ -42,4 +42,4 @@ app.set("view engine", "hbs");
 app.set("views", "./templates");
 
 http.listen(port, () => console.log(`Running at http://localhost:${port}`));
-startScrapper();
+
