@@ -8,15 +8,21 @@ export default class ProductController extends BaseController {
   constructor() {
     super(productManager);
   }
-  async getProductPriceHistory( req: Request, res: Response ): Promise<Response<any, Record<string, any>>> {
+  async getProductPriceHistory(
+    req: Request,
+    res: Response
+  ): Promise<Response<any, Record<string, any>>> {
     try {
       const { id } = req.params;
       const result = await productManager.getProductPriceHistory(id);
-      
-      return responseService.success(res, "Product price history fetched successfully", result);
+
+      return responseService.success(
+        res,
+        "Product price history fetched successfully",
+        result
+      );
     } catch (err) {
       return responseService.error(res, err);
     }
   }
-      
 }
