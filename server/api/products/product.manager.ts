@@ -6,12 +6,18 @@ import product_changes from "../models/product_changes";
 export class ProductManager extends BaseManager<Product> {
   getDailyPriceById(id: string) {
     return productModel
-    .getAllPopulated({$and:[
-     { _id: id,},
-      {'product_changes.date':{
-        $eq: new Date().toLocaleDateString('pt-Pt')
-      }}
-    ]}, "",{}, ["product_changes"])
+    .getAllPopulated({_id:id},"",{}, ["product_changes"]).then(
+      (products: any) => {
+        let result = products.filter((product: any) => {
+          return (
+            product.product_changes[product.product_changes.length - 1].date ==
+            new Date().toLocaleDateString("pt-Pt")
+          );
+        });
+
+
+      }
+    )
     .catch((err) => {
       throw err;
     });
