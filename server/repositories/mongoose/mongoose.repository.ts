@@ -42,6 +42,7 @@ export default class MongooseRepo implements BaseRepository {
     populateFields?: string[]
   ): Promise<any[]> {
     const Model = await this.createModel();
+    console.log("filter", filter);
     return Model.find(filter, projection, options)
       .populate(populateFields || [])
       .exec();

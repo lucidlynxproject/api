@@ -1,6 +1,6 @@
 // import l from "../../common/logger";
 
-// import { Product, IProductModel } from "../models/product";
+// import { Product, IProductModel } from "../products/product.model";
 
 // export class ProductsService {
 //   async getAll(): Promise<IProductModel[]> {

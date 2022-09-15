@@ -13,12 +13,14 @@ const CategorySchema = new Schema(
     },
     section: {
         type: Schema.Types.ObjectId,
-        ref: "sections",
+        ref: "section",
 
         }
   },
   {
     timestamps: true,
+    collection: "categories",
+  
   }
 );
 

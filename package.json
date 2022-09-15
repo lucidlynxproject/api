@@ -10,7 +10,7 @@
   "scripts": {
     "start": "npm run compile && node ./dist/server/index.js",
     "compile": "ts-node build.ts && tsc",
-    "dev": "cp ./server/environments/.env.development ./.env && nodemon ./server/index.ts",
+    "dev": "nodemon ./server/index.ts",
     "dev:debug": "nodemon --exec \"node -r ts-node/register --inspect-brk\" server/index.ts | pino-pretty",
     "test": "cross-env NODE_ENV=development mocha test/**/*.ts --exit",
     "test:debug": "cross-env NODE_ENV=test mocha --inspect-brk test/**/*.ts --exit",

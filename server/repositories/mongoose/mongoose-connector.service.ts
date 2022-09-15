@@ -17,7 +17,13 @@ const {
 } = process.env;
 
 const POOL_SIZE = 20;
-  export const MONGOOSE_MODELS = [{ name: "users", schema: UserSchema },{ name: "products", schema: ProductSchema },{ name: "product_changes", schema: Product_ChangesSchema },{ name: "sections", schema: SectionSchema },{ name: "categories", schema: CategorySchema }];
+export const MONGOOSE_MODELS = [
+  { name: "users", schema: UserSchema },
+  { name: "products", schema: ProductSchema },
+  { name: "product_changes", schema: Product_ChangesSchema },
+  { name: "sections", schema: SectionSchema },
+  { name: "categories", schema: CategorySchema },
+];
 
 class MongooseConnector {
   connectionPool: { db: string; connection: Connection }[];

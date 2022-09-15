@@ -8,5 +8,10 @@ const SectionSchema = new Schema({
       ref: "categories",
     },
   ],
+  
+} , {
+  timestamps: true,
+  collection: "section",
+
 });
 export default SectionSchema;
