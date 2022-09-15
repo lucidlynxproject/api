@@ -1,27 +1,26 @@
 import { NextFunction, Request, Response } from "express";
-import AuthService from "../api/auth/auth.service";
+import queryParser from "../services/query-parser.service";
+import userModel from "../api/user/user.model";
 
 class ApiTokenMiddleware {
-  //TODO: Validate that the token is present in the user's database registry.
-  //this middleware is not working properly!!!!
-  public async hasValidRecoveryTokenQuery(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    const { apiToken } = req.body;
-    if (!apiToken) {
+  public async hasApiToken(req: Request, res: Response, next: NextFunction) {
+    const authHeader = req.headers?.authorization;
+    const token = authHeader && authHeader.split(" ")[1];
+
+    const filters = queryParser.getFilters({ apiToken: token });
+    const foundUser = await userModel.getOne(filters);
+
+    if (!token || !foundUser) {
       return res.status(401).send({ message: "Unauthorized" });
     }
+
     try {
-      AuthService.checkRecoveryToken(apiToken as string);
+      return next();
     } catch (error) {
-      if ((error as any).name === "TokenExpiredError") {
-        return res.status(401).send({ message: (error as any).name });
-      }
-      return res.status(401).send({ message: "Unauthorized" });
+      return res
+        .status(401)
+        .send({ message: `Unauthorized, ${(error as any).name}` });
     }
-    return next();
   }
 }
 
