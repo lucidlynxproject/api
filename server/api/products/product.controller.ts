@@ -13,32 +13,13 @@ export default class ProductController extends BaseController {
     res: Response
   ): Promise<Response<any, Record<string, any>>> {
     try {
-      const { id } = req.body;
-      console.log(req.body);
-      const result = await productManager.getDailyPriceById(id);
+      const { id } = req.query;
+      const { date } = req.query;
+      const result = await productManager.getDailyPriceById(id as string,date as string);
 
       return responseService.success(
         res,
         "Product price history fetched successfully",
-        result
-      );
-    } catch (err) {
-      return responseService.error(res, err);
-    }
-  }
-  async getDailyPriceBySection(
-    req: Request,
-    res: Response
-  ): Promise<Response<any, Record<string, any>>> {
-    try {
-      const {section} = req.params;
-      const result = await productManager.getDailyPriceBySection(
-        section
-      );
-  
-      return responseService.success(
-        res,
-        "Product price history category fetched successfully",
         result
       );
     } catch (err) {
@@ -50,10 +31,30 @@ export default class ProductController extends BaseController {
     res: Response
   ): Promise<Response<any, Record<string, any>>> {
     try {
-      const {category } = req.params;
+      const {category,date } = req.query;
       const result = await productManager.getDailyPriceByCategory(
-        category
+        category,
+        date
       );
+
+      return responseService.success(
+        res,
+        "Product price history category fetched successfully",
+        result
+      );
+    } catch (err) {
+      return responseService.error(res, err);
+    }
+  }
+  async getProductPriceHistoryById(
+    req: Request,
+    res: Response
+  ): Promise<Response<any, Record<string, any>>> {
+    try {
+      const { id } = req.query;
+
+
+      const result = await productManager.getProductPriceHistoryById(id);
 
       return responseService.success(
         res,
@@ -69,8 +70,9 @@ export default class ProductController extends BaseController {
     res: Response
   ): Promise<Response<any, Record<string, any>>> {
     try {
-      const { category } = req.params;
+      const {category } = req.query;
 
+      
       const result = await productManager.getPriceHistoryByCategory(
         category,
         
@@ -85,16 +87,14 @@ export default class ProductController extends BaseController {
       return responseService.error(res, err);
     }
   }
-
-  async getProductPriceHistoryById(
+  async getCategoryNames(
     req: Request,
     res: Response
   ): Promise<Response<any, Record<string, any>>> {
     try {
-      const { id } = req.params;
 
-
-      const result = await productManager.getProductPriceHistoryById(id);
+      
+      const result = await productManager.getCategories();
 
       return responseService.success(
         res,
@@ -105,26 +105,6 @@ export default class ProductController extends BaseController {
       return responseService.error(res, err);
     }
   }
-  async getPriceHistoryBySection(
-    req: Request,
-    res: Response
-  ): Promise<Response<any, Record<string, any>>> {
-    try {
-      const { section } = req.params;
 
 
-
-      const result = await productManager.getProductPriceGHistoryBySection(
-        section
-      );
-
-      return responseService.success(
-        res,
-        "Product price history category fetched successfully",
-        result
-      );
-    } catch (err) {
-      return responseService.error(res, err);
-    }
-  }
 }
