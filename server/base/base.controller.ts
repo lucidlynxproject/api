@@ -13,12 +13,10 @@ export default class BaseController {
     try {
       const filters = queryParser.getFilters(req.query);
       const number = await this.baseManager.getCount(filters);
-      return res
-        .status(200)
-        .send({
-          message: "Number of elements returned successfully",
-          data: { count: number ?? 0 },
-        });
+      return res.status(200).send({
+        message: "Number of elements returned successfully",
+        data: { count: number ?? 0 },
+      });
     } catch (e) {
       return this.handleError(res, e);
     }
