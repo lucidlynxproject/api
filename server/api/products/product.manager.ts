@@ -111,6 +111,24 @@ export class ProductManager extends BaseManager<Product> {
         throw err;
       });
   }
+
+  getDaily(): any {
+    return productModel
+      .getAllPopulated(
+        {
+          date: {
+            $gte: new Date(new Date().setUTCHours(0, 0, 0, 0)),
+            $lt: new Date(),
+          },
+        },
+        "",
+        {},
+        ["product_changes"]
+      )
+      .catch((err) => {
+        throw err;
+      });
+  }
 }
 
 export default new ProductManager();

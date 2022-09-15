@@ -11,6 +11,9 @@ productRouter.get("/:id", (req, res) => productController.getById(req, res));
 productRouter.get("/:id/history", (req, res) =>
   productController.getProductHistory(req, res)
 );
+productRouter.get("/daily/price", (req, res) =>
+  productController.getDailyProducts(req, res)
+);
 
 // Refactorización endpoints - Melo
 

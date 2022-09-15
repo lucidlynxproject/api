@@ -28,6 +28,22 @@ export default class ProductController extends BaseController {
     }
   }
 
+  async getDailyProducts(
+    req: Request,
+    res: Response
+  ): Promise<Response<any, Record<string, any>>> {
+    try {
+      const result = await productManager.getDaily();
+      return responseService.success(
+        res,
+        "Daily product price fetched successfully",
+        result
+      );
+    } catch (err) {
+      return responseService.error(res, err);
+    }
+  }
+
   async getDailyPriceBySection(
     req: Request,
     res: Response
