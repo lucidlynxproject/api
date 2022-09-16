@@ -21,7 +21,6 @@ paths:
         - products
       summary: Get all products
       description: Get all products at once
-      operationId: productsGET
       responses:
         "200":
           description: Successful operation
@@ -36,25 +35,50 @@ paths:
         - pricesanalytics_auth:
             - read:product
       x-swagger-router-controller: Products
-  /products/history/{id}:
+  /products/dailyprice:
     get:
       tags:
         - products
-      summary: Get history of product by product ID
-      description: Multiple status values can be provided with comma separated strings
-      operationId: findPetsByStatus
+      summary: Get a product price on a date by passing an ID and a date.
+      description: Get a product on a date
       parameters:
-        - name: id
-          in: path
-          description: ID of the wanted product history
-          required: true
-          style: simple
-          explode: false
+        - in: query
+          name: id
+          schema:
+            type: string
+        - in: query
+          name: date
           schema:
             type: string
       responses:
         "200":
-          description: successful operation
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+      security:
+        - pricesanalytics_auth:
+            - read:product
+      x-swagger-router-controller: Products
+  /products/dailypricebycategory:
+    get:
+      tags:
+        - products
+      summary: Get a list of product prices based on category by passing a category and a date.
+      description: Get a list of products
+      parameters:
+        - in: query
+          name: category
+          schema:
+            type: string
+        - in: query
+          name: date
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
           content:
             application/json:
               schema:
@@ -62,11 +86,84 @@ paths:
                 items:
                   $ref: "#/components/schemas/Product"
                 x-content-type: application/json
-        "400":
-          description: Invalid status value
       security:
-        - petstore_auth:
-            - read:products
+        - pricesanalytics_auth:
+            - read:product
+      x-swagger-router-controller: Products
+  /products/pricehistory:
+    get:
+      tags:
+        - products
+      summary: Get a list of historic prices of a product by passing an id.
+      description: Get a list of historic data of a product.
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+                x-content-type: application/json
+      security:
+        - pricesanalytics_auth:
+            - read:product
+      x-swagger-router-controller: Products
+  /products/pricehistorybycategory:
+    get:
+      tags:
+        - products
+      summary: Get a list of all historic prices of products by passing a category.
+      description: Get a list of historic data of a category.
+      parameters:
+        - in: query
+          name: category
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+                x-content-type: application/json
+      security:
+        - pricesanalytics_auth:
+            - read:product
+      x-swagger-router-controller: Products
+  /products/categories:
+    get:
+      tags:
+        - products
+      summary: Get a list of all categories.
+      description: Get a list of all categories on the system.
+      parameters:
+        - in: query
+          name: category
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+                x-content-type: application/json
+      security:
+        - pricesanalytics_auth:
+            - read:product
       x-swagger-router-controller: Products
 components:
   schemas:
@@ -97,12 +194,4 @@ components:
   securitySchemes:
     pricesanalytics_auth:
       type: http
-      flows:
-        implicit:
-          authorizationUrl: https://price-comparator-web-stage.web.app/token
-          scopes:
-            read:products: read products
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header
+      scheme: bearer

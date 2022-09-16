@@ -11,5 +11,4 @@ apiRouter.use("/auth", authRouter);
 apiRouter.use("/token", tokenRouter);
 apiRouter.use("/user", userRouter);
 apiRouter.use("/products", apiTokenMiddleware.hasApiToken, productRouter);
-
 export default apiRouter;
